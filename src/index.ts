@@ -1,6 +1,7 @@
 import { Octokit } from '@octokit/core';
-import core from '@actions/core';
+import * as core from '@actions/core';
 import { context } from '@actions/github';
+import fetch from 'node-fetch';
 
 const authToken = process.env.GITHUB_TOKEN;
 
@@ -9,6 +10,10 @@ console.log('starting create release');
 // https://github.com/octokit/core.js#readme
 const octokit = new Octokit({
   auth: authToken,
+  request: {
+    userAgent: 'gabrielogregorio/create-release-and-tag/v2.0.0',
+    fetch,
+  },
 });
 
 const getInputs = () => {
@@ -69,7 +74,15 @@ export const createRelease = async () => {
     core.setOutput('upload_url', outputs.uploadUrl);
   } catch (error) {
     // @ts-ignore
-    core.setFailed(error.message);
+    if (error?.response?.data?.message === 'Resource not accessible by integration') {
+      core.setFailed(
+        'Error you need to give permissions for this action to create a release and a tag. Access Actions > General > Workflow permissions > (choice) Read and write permissions > [Save]',
+      );
+    } else {
+      console.log('unknown error', error);
+      // @ts-ignore
+      core.setFailed(error.message);
+    }
   }
 };
 

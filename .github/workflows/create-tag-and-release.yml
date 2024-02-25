@@ -1,0 +1,54 @@
+name: create tag and release on merge pr
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  create-release:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+
+      - name: get current version
+        id: get-version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "Current version: $VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: update release with PR content and set tag version
+        id: update-pr-content
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_CONTENT="${PR_TITLE}: ${{ github.event.pull_request.body }}"
+          TAG_VERSION="v${{ env.VERSION }} - ${PR_TITLE}"
+          echo "PR_CONTENT<<EOF" >> $GITHUB_ENV
+          echo "$PR_CONTENT" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          echo "TAG_VERSION=$TAG_VERSION" >> $GITHUB_ENV
+
+      - name: create release and tag
+        uses: gabrielogregorio/create-tag-and-release@1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.TAG_VERSION }}
+          release_name: Release ${{ env.TAG_VERSION }}
+          body: |
+            ${{ env.PR_CONTENT }}
+          draft: false
+          prerelease: false
