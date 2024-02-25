@@ -32989,19 +32989,10 @@ const createTagAndRelease = (inputs) => __awaiter(void 0, void 0, void 0, functi
     var _a;
     console.log('create tag and release with inputs', JSON.stringify(inputs));
     const octokit = connectOctokit();
-    const response = yield octokit.request(`POST /repos/${inputs.owner}/${inputs.repo}/releases`, {
-        owner: inputs.owner,
-        repo: inputs.repo,
-        tag_name: inputs.tag_name,
-        target_commitish: inputs.target_commitish,
-        name: inputs.release_name,
-        body: inputs.body,
-        draft: inputs.draft,
-        prerelease: inputs.prerelease,
-        discussion_category_name: inputs.discussion_category_name,
-        generate_release_notes: inputs.generate_release_notes,
-        make_latest: inputs.make_latest,
-    });
+    const payloadDiscussionCategoryName = inputs.discussion_category_name
+        ? { discussion_category_name: inputs.discussion_category_name }
+        : {};
+    const response = yield octokit.request(`POST /repos/${inputs.owner}/${inputs.repo}/releases`, Object.assign(Object.assign({}, payloadDiscussionCategoryName), { owner: inputs.owner, repo: inputs.repo, tag_name: inputs.tag_name, target_commitish: inputs.target_commitish, name: inputs.release_name, body: inputs.body, draft: inputs.draft, prerelease: inputs.prerelease, generate_release_notes: inputs.generate_release_notes, make_latest: inputs.make_latest }));
     console.log('tag and release create with success');
     const { data } = response || {};
     const outputs = {
