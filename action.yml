@@ -1,0 +1,29 @@
+name: 'Create Release And Tag'
+description: 'Create release and tag'
+author: 'Gabriel Gregório'
+inputs:
+  tag_name:
+    description: 'The tag name'
+    required: true
+  release_name:
+    description: 'The release name'
+    required: true
+  body:
+    description: 'The body'
+    required: false
+
+outputs:
+  id:
+    description: 'The ID'
+  html_url:
+    description: 'The html url'
+  upload_url:
+    description: 'The upload url'
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
+
+branding:
+  icon: 'award'
+  color: 'blue'
