@@ -17,7 +17,7 @@ And then just go to the "Workflow permissions" section, check the "Read and writ
 
 Create a `.yml` file in the `.github/workflows` directory and configure the `gabrielogregorio/create-tag-and-release@v1.0.1` action specifying the version you want to use.
 
-Below is an example of how to use it with some more basic parameters
+Below is an example of how to use it with some more basic parameters. If you use the `master` branch or another branch, you will need to rename all references to main in the example below
 
 ```yml
 name: create tag and release on merge pr
@@ -52,14 +52,12 @@ jobs:
 
 ### Configuring a more complete action
 
-The example below is much more complete, it handles push directly to `main`, or when merging pull requests. If you use the `master` branch or another branch, you will need to rename all references to main in the example below
-
-In the `set config tag and release` step, various information is obtained, such as the version in `package.json`, the title of the pull request and its content, this is used to create releases in a pattern that I like.
+The example below is much more complete. In the `set config tag and release` step, various information is obtained, such as the version in `package.json`, the title of the pull request and its content, this is used to create releases in a pattern that I like.
 
 ```yml
+# when a pull request is closed pointing to main
 name: create tag and release on merge pr
 
-# when a pull request is closed pointing to main
 on:
   pull_request:
     types: [closed]
@@ -67,7 +65,6 @@ on:
 
 jobs:
   create-release:
-    # if there is a pull request event being merged
     if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
@@ -83,15 +80,12 @@ jobs:
 
       - name: set config tag and release
         run: |
-          # This is a trick to get the version of a package.json
           PACKAGE_VERSION=$(node -p "require('./package.json').version")
 
-          # This is a way to read pull request information, such as title and body
           PR_TITLE="${{ github.event.pull_request.title }}"
           PR_BODY="${{ github.event.pull_request.body }}"
           BODY_RELEASE="${PR_TITLE} ${PR_BODY}"
 
-          # This is a way to correctly save the line breaks contained in a pull request
           echo "BODY_RELEASE<<EOF" >> $GITHUB_ENV
           echo "$BODY_RELEASE" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
@@ -115,7 +109,6 @@ jobs:
           generate_release_notes: false
           draft: false
           prerelease: false
-
 ```
 ### Understanding Input Settings
 
