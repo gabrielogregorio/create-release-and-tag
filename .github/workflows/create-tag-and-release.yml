@@ -30,9 +30,9 @@ jobs:
             PR_BODY="${{ github.event.pull_request.body }}"
             BODY_RELEASE="${PR_TITLE}: ${PR_BODY}"
           else
-            BODY_RELEASE="Release ${TAG_NAME}"
+            BODY_RELEASE="Release ${PACKAGE_VERSION}"
           fi
-          echo "$BODY_RELEASE" >> $GITHUB_ENV
+          echo "BODY_RELEASE=$BODY_RELEASE" >> $GITHUB_ENV
 
           TAG_NAME="v${PACKAGE_VERSION}"
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
