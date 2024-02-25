@@ -34,25 +34,25 @@ export const createTagAndRelease = async (inputs: ReleaseInputs) => {
 
   console.log('tag and release create with success');
 
-  const { data } = response;
+  const { data } = response || {};
   const outputs = {
-    id: data.id,
-    status: response.status,
-    url: data.url,
-    assets_url: data.assets_url,
-    upload_url: data.upload_url,
-    html_url: data.html_url,
-    author: data.author.login,
-    tag_name: data.tag_name,
-    target_commitish: data.target_commitish,
-    name: data.name,
-    draft: data.draft,
-    prerelease: data.prerelease,
-    created_at: data.created_at,
-    published_at: data.published_at,
-    body: data.body,
-    assets: data.assets,
-    discussion_url: data.discussion_url,
+    id: data?.id,
+    status: response?.status,
+    url: data?.url,
+    assets_url: data?.assets_url,
+    upload_url: data?.upload_url,
+    html_url: data?.html_url,
+    author: data?.author?.login,
+    tag_name: data?.tag_name,
+    target_commitish: data?.target_commitish,
+    name: data?.name,
+    draft: data?.draft,
+    prerelease: data?.prerelease,
+    created_at: data?.created_at,
+    published_at: data?.published_at,
+    body: data?.body,
+    assets: data?.assets,
+    discussion_url: data?.discussion_url,
   };
 
   console.log('outputs', JSON.stringify(outputs));

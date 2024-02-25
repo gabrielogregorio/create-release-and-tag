@@ -10,8 +10,8 @@ export const main = async (inputsDefault?: ReleaseInputs) => {
 
     await createTagAndRelease(inputs);
   } catch (error: any) {
-    const code = error?.response?.data.errors[0].code;
-    const field = error?.response?.data.errors[0].field;
+    const code = error?.response?.data.errors?.[0]?.code;
+    const field = error?.response?.data.errors?.[0]?.field;
 
     if (code === 'already_exists') {
       core.setFailed(`"${field}" already exists`);
