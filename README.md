@@ -15,7 +15,7 @@ And then just go to the "Workflow permissions" section, check the "Read and writ
 
 ### Configuring a simpler action
 
-Create a `.yml` file in the `.github/workflows` directory and configure the `gabrielogregorio/create-tag-and-release@v1.0.0` action specifying the version you want to use.
+Create a `.yml` file in the `.github/workflows` directory and configure the `gabrielogregorio/create-tag-and-release@v1.0.1` action specifying the version you want to use.
 
 Below is an example of how to use it with some more basic parameters
 
@@ -38,7 +38,7 @@ jobs:
           ref: main
 
       - name: create tag and release
-        uses: gabrielogregorio/create-tag-and-release@v1.0.0
+        uses: gabrielogregorio/create-tag-and-release@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -105,7 +105,7 @@ jobs:
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
 
       - name: create tag and release
-        uses: gabrielogregorio/create-tag-and-release@v1.0.0
+        uses: gabrielogregorio/create-tag-and-release@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -128,7 +128,7 @@ The input parameters are inside `with`, example below
 
 ```yml
 - name: create tag and release
-  uses: gabrielogregorio/create-tag-and-release@v1.0.0
+  uses: gabrielogregorio/create-tag-and-release@v1.0.1
   env:
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   with:

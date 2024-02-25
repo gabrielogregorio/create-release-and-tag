@@ -32986,6 +32986,7 @@ const connectOctokit = () => {
     });
 };
 const createTagAndRelease = (inputs) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     console.log('create tag and release with inputs', JSON.stringify(inputs));
     const octokit = connectOctokit();
     const response = yield octokit.request(`POST /repos/${inputs.owner}/${inputs.repo}/releases`, {
@@ -33002,25 +33003,25 @@ const createTagAndRelease = (inputs) => __awaiter(void 0, void 0, void 0, functi
         make_latest: inputs.make_latest,
     });
     console.log('tag and release create with success');
-    const { data } = response;
+    const { data } = response || {};
     const outputs = {
-        id: data.id,
-        status: response.status,
-        url: data.url,
-        assets_url: data.assets_url,
-        upload_url: data.upload_url,
-        html_url: data.html_url,
-        author: data.author.login,
-        tag_name: data.tag_name,
-        target_commitish: data.target_commitish,
-        name: data.name,
-        draft: data.draft,
-        prerelease: data.prerelease,
-        created_at: data.created_at,
-        published_at: data.published_at,
-        body: data.body,
-        assets: data.assets,
-        discussion_url: data.discussion_url,
+        id: data === null || data === void 0 ? void 0 : data.id,
+        status: response === null || response === void 0 ? void 0 : response.status,
+        url: data === null || data === void 0 ? void 0 : data.url,
+        assets_url: data === null || data === void 0 ? void 0 : data.assets_url,
+        upload_url: data === null || data === void 0 ? void 0 : data.upload_url,
+        html_url: data === null || data === void 0 ? void 0 : data.html_url,
+        author: (_a = data === null || data === void 0 ? void 0 : data.author) === null || _a === void 0 ? void 0 : _a.login,
+        tag_name: data === null || data === void 0 ? void 0 : data.tag_name,
+        target_commitish: data === null || data === void 0 ? void 0 : data.target_commitish,
+        name: data === null || data === void 0 ? void 0 : data.name,
+        draft: data === null || data === void 0 ? void 0 : data.draft,
+        prerelease: data === null || data === void 0 ? void 0 : data.prerelease,
+        created_at: data === null || data === void 0 ? void 0 : data.created_at,
+        published_at: data === null || data === void 0 ? void 0 : data.published_at,
+        body: data === null || data === void 0 ? void 0 : data.body,
+        assets: data === null || data === void 0 ? void 0 : data.assets,
+        discussion_url: data === null || data === void 0 ? void 0 : data.discussion_url,
     };
     console.log('outputs', JSON.stringify(outputs));
     core.setOutput('id', outputs.id);
@@ -33166,20 +33167,20 @@ const core = __importStar(__nccwpck_require__(2186));
 const createTagAndRelease_1 = __nccwpck_require__(6256);
 const fetchInputs_1 = __nccwpck_require__(4581);
 const main = (inputsDefault) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e, _f, _g, _h;
     try {
         const inputs = inputsDefault || (0, fetchInputs_1.fetchInputs)();
         console.log('starting create tag and release ');
         yield (0, createTagAndRelease_1.createTagAndRelease)(inputs);
     }
     catch (error) {
-        const code = (_a = error === null || error === void 0 ? void 0 : error.response) === null || _a === void 0 ? void 0 : _a.data.errors[0].code;
-        const field = (_b = error === null || error === void 0 ? void 0 : error.response) === null || _b === void 0 ? void 0 : _b.data.errors[0].field;
+        const code = (_c = (_b = (_a = error === null || error === void 0 ? void 0 : error.response) === null || _a === void 0 ? void 0 : _a.data.errors) === null || _b === void 0 ? void 0 : _b[0]) === null || _c === void 0 ? void 0 : _c.code;
+        const field = (_f = (_e = (_d = error === null || error === void 0 ? void 0 : error.response) === null || _d === void 0 ? void 0 : _d.data.errors) === null || _e === void 0 ? void 0 : _e[0]) === null || _f === void 0 ? void 0 : _f.field;
         if (code === 'already_exists') {
             core.setFailed(`"${field}" already exists`);
             return;
         }
-        if (((_d = (_c = error === null || error === void 0 ? void 0 : error.response) === null || _c === void 0 ? void 0 : _c.data) === null || _d === void 0 ? void 0 : _d.message) === 'Resource not accessible by integration') {
+        if (((_h = (_g = error === null || error === void 0 ? void 0 : error.response) === null || _g === void 0 ? void 0 : _g.data) === null || _h === void 0 ? void 0 : _h.message) === 'Resource not accessible by integration') {
             core.setFailed('you need to give permissions for this action to create a release and a tag. Access Actions > General > Workflow permissions > (choice) Read and write permissions > [Save]');
             return;
         }
