@@ -22,7 +22,6 @@ jobs:
           node-version: 20.x
 
       - name: set config tag and release
-        id: get configs
         run: |
           PACKAGE_VERSION=$(node -p "require('./package.json').version")
 
@@ -33,6 +32,7 @@ jobs:
           else
             BODY_RELEASE="Release ${TAG_NAME}"
           fi
+          echo "$BODY_RELEASE" >> $GITHUB_ENV
 
           TAG_NAME="v${PACKAGE_VERSION}"
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
