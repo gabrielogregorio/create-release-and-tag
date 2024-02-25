@@ -23,7 +23,7 @@ export const createTagAndRelease = async (inputs: ReleaseInputs) => {
     repo: inputs.repo,
     tag_name: inputs.tag_name,
     target_commitish: inputs.target_commitish,
-    name: inputs.name,
+    name: inputs.release_name,
     body: inputs.body,
     draft: inputs.draft,
     prerelease: inputs.prerelease,

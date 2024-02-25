@@ -1,6 +1,6 @@
 export type ReleaseInputs = {
   tag_name: string;
-  name: string;
+  release_name: string;
   body: string;
   draft: boolean;
   prerelease: boolean;

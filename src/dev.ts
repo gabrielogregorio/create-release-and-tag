@@ -11,7 +11,7 @@ const repo = 'test';
 
 createTagAndRelease({
   tag_name: 'test',
-  name: 'release name',
+  release_name: 'release name',
   body: 'example body',
   draft: false,
   prerelease: false,

@@ -32993,7 +32993,7 @@ const createTagAndRelease = (inputs) => __awaiter(void 0, void 0, void 0, functi
         repo: inputs.repo,
         tag_name: inputs.tag_name,
         target_commitish: inputs.target_commitish,
-        name: inputs.name,
+        name: inputs.release_name,
         body: inputs.body,
         draft: inputs.draft,
         prerelease: inputs.prerelease,
@@ -33084,10 +33084,10 @@ const github_1 = __nccwpck_require__(5438);
 const fs_1 = __importDefault(__nccwpck_require__(7147));
 const fetchInputs = () => {
     const tag_name = core.getInput('tag_name', { required: true });
-    const name = core.getInput('name', { required: false });
+    const release_name = core.getInput('release_name', { required: false });
     const body_raw = core.getInput('body', { required: false });
-    const draft = core.getInput('draft', { required: false }) === 'true';
-    const prerelease = core.getInput('prerelease', { required: false }) === 'true';
+    const draft = core.getInput('draft', { required: false }).toString() === 'true';
+    const prerelease = core.getInput('prerelease', { required: false }).toString() === 'true';
     const target_commitish = core.getInput('target_commitish', { required: false }) || github_1.context.sha;
     const body_path = core.getInput('body_path', { required: false });
     let body = body_raw;
@@ -33102,11 +33102,11 @@ const fetchInputs = () => {
     const owner = core.getInput('owner', { required: false }) || github_1.context.repo.owner;
     const repo = core.getInput('repo', { required: false }) || github_1.context.repo.repo;
     const discussion_category_name = core.getInput('discussion_category_name', { required: false });
-    const generate_release_notes = core.getInput('generate_release_notes', { required: false }) === 'true';
-    const make_latest = (core.getInput('repo', { required: false }) === 'true').toString();
+    const generate_release_notes = core.getInput('generate_release_notes', { required: false }).toString() === 'true';
+    const make_latest = (core.getInput('make_latest', { required: false }).toString() === 'true').toString();
     return {
         tag_name,
-        name,
+        release_name,
         body,
         draft,
         prerelease,

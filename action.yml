@@ -5,14 +5,14 @@ inputs:
   tag_name:
     description: 'The name of the tag.'
     required: true
-  name:
+  release_name:
     description: 'The name of the release.'
     required: false
   body:
-    description: 'body contendo o conteudo do body'
+    description: 'body of release'
     required: false
   body_path:
-    description: 'file with body release content. se informando, body não será considerado'
+    description: 'file that will contain the release body. If informed, body will be disregarded'
     required: false
   draft:
     description: 'true to create a draft (unpublished) release, false to create a published one. Default: false'

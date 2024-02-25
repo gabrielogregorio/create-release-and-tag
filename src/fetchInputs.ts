@@ -5,10 +5,10 @@ import { ReleaseInputs } from './types';
 
 export const fetchInputs = (): ReleaseInputs => {
   const tag_name = core.getInput('tag_name', { required: true });
-  const name = core.getInput('name', { required: false });
+  const release_name = core.getInput('release_name', { required: false });
   const body_raw = core.getInput('body', { required: false });
-  const draft = core.getInput('draft', { required: false }) === 'true';
-  const prerelease = core.getInput('prerelease', { required: false }) === 'true';
+  const draft = core.getInput('draft', { required: false }).toString() === 'true';
+  const prerelease = core.getInput('prerelease', { required: false }).toString() === 'true';
   const target_commitish = core.getInput('target_commitish', { required: false }) || context.sha;
   const body_path = core.getInput('body_path', { required: false });
 
@@ -24,12 +24,12 @@ export const fetchInputs = (): ReleaseInputs => {
   const owner = core.getInput('owner', { required: false }) || context.repo.owner;
   const repo = core.getInput('repo', { required: false }) || context.repo.repo;
   const discussion_category_name = core.getInput('discussion_category_name', { required: false });
-  const generate_release_notes = core.getInput('generate_release_notes', { required: false }) === 'true';
-  const make_latest = (core.getInput('repo', { required: false }) === 'true').toString();
+  const generate_release_notes = core.getInput('generate_release_notes', { required: false }).toString() === 'true';
+  const make_latest = (core.getInput('make_latest', { required: false }).toString() === 'true').toString();
 
   return {
     tag_name,
-    name,
+    release_name,
     body,
     draft,
     prerelease,
