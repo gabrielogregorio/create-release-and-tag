@@ -19,6 +19,7 @@
   },
   "plugins": ["@typescript-eslint", "import"],
   "rules": {
+    "no-console": "off",
     "import/extensions": "off",
     "import/prefer-default-export": "off",
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
