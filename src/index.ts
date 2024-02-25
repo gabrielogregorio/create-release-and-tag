@@ -1,76 +1,33 @@
-import { Octokit } from '@octokit/core';
-import core from '@actions/core';
-import { context } from '@actions/github';
+import * as core from '@actions/core';
+import { createTagAndRelease } from './createTagAndRelease';
+import { fetchInputs } from './fetchInputs';
+import { ReleaseInputs } from './types';
 
-const authToken = process.env.GITHUB_TOKEN;
-
-console.log('starting create release');
-
-// https://github.com/octokit/core.js#readme
-const octokit = new Octokit({
-  auth: authToken,
-});
-
-const getInputs = () => {
-  const tag_name = core.getInput('tag_name', { required: true }).replace('refs/tags/', '');
-  const release_name = core.getInput('release_name', { required: false }).replace('refs/tags/', '');
-  const body = core.getInput('body', { required: false });
-
-  return {
-    tag_name,
-    release_name,
-    body,
-  };
-};
-
-export const createRelease = async () => {
+export const main = async (inputsDefault?: ReleaseInputs) => {
   try {
-    const inputs = getInputs();
+    const inputs = inputsDefault || fetchInputs();
+    console.log('starting create tag and release ');
 
-    console.log('inputs', JSON.stringify(inputs));
+    await createTagAndRelease(inputs);
+  } catch (error: any) {
+    const code = error?.response?.data.errors[0].code;
+    const field = error?.response?.data.errors[0].field;
 
-    const { owner, repo } = context.repo;
-    console.log('repo config', JSON.stringify({ owner, repo }));
+    if (code === 'already_exists') {
+      core.setFailed(`"${field}" already exists`);
+      return;
+    }
 
-    // https://docs.github.com/pt/rest/releases/releases?apiVersion=2022-11-28#create-a-release
-    const createReleaseResponse = await octokit.request(`POST /repos/${owner}/${repo}/releases`, {
-      owner,
-      repo,
-      tag_name: inputs.tag_name,
-      target_commitish: 'main',
-      name: inputs.release_name,
-      body: inputs.body,
-      draft: false,
-      prerelease: false,
-      generate_release_notes: false,
-      headers: {
-        //   'X-GitHub-Api-Version': '2022-11-28',
-      },
-    });
+    if (error?.response?.data?.message === 'Resource not accessible by integration') {
+      core.setFailed(
+        'you need to give permissions for this action to create a release and a tag. Access Actions > General > Workflow permissions > (choice) Read and write permissions > [Save]',
+      );
+      return;
+    }
 
-    console.log('tag create as success');
-
-    console.log('get outputs');
-    const {
-      data: { id: releaseId, html_url: htmlUrl, upload_url: uploadUrl },
-    } = createReleaseResponse;
-
-    const outputs = {
-      releaseId,
-      htmlUrl,
-      uploadUrl,
-    };
-
-    console.log('outputs', JSON.stringify(outputs));
-
-    // https://github.com/actions/toolkit/tree/master/packages/core#inputsoutputs
-    core.setOutput('id', outputs.releaseId);
-    core.setOutput('html_url', outputs.htmlUrl);
-    core.setOutput('upload_url', outputs.uploadUrl);
-  } catch (error) {
-    // @ts-ignore
+    console.log('unknown error', error);
     core.setFailed(error.message);
   }
 };
 
-createRelease();
+main();

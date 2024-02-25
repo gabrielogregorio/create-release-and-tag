@@ -1,27 +1,86 @@
-name: 'Create Release And Tag'
-description: 'Create release and tag'
+name: 'Create Tag And Release'
+description: 'Create tag and release'
 author: 'Gabriel Gregório'
 inputs:
   tag_name:
-    description: 'The tag name'
+    description: 'The name of the tag.'
     required: true
   release_name:
-    description: 'The release name'
-    required: true
-  body:
-    description: 'The body'
+    description: 'The name of the release.'
     required: false
+  body:
+    description: 'body of release'
+    required: false
+  body_path:
+    description: 'file that will contain the release body. If informed, body will be disregarded'
+    required: false
+  draft:
+    description: 'true to create a draft (unpublished) release, false to create a published one. Default: false'
+    required: false
+    default: false
+  prerelease:
+    description: 'true to identify the release as a prerelease. false to identify the release as a full release. Padrão: false'
+    required: false
+    default: false
+  target_commitish:
+    description: "Specifies the commitish value that determines where the Git tag is created from. Can be any branch or commit SHA. Unused if the Git tag already exists. Default: the repository's default branch."
+    required: false
+  owner:
+    description: 'The account owner of the repository. The name is not case sensitive.'
+    required: false
+  repo:
+    description: 'The name of the repository without the .git extension. The name is not case sensitive.'
+    required: false
+  discussion_category_name:
+    description: 'If specified, a discussion of the specified category is created and linked to the release. The value must be a category that already exists in the repository. For more information, see "Managing categories for discussions in your repository."'
+    required: false
+  generate_release_notes:
+    description: 'Whether to automatically generate the name and body for this release. If name is specified, the specified name will be used; otherwise, a name will be automatically generated. If body is specified, the body will be pre-pended to the automatically generated notes. Padrão: false'
+    required: false
+    default: false
+  make_latest:
+    description: 'Specifies whether this release should be set as the latest release for the repository. Drafts and prereleases cannot be set as latest. Defaults to true for newly published releases. legacy specifies that the latest release should be determined based on the release creation date and higher semantic version. Padrão: true'
+    required: false
+    default: true
 
 outputs:
   id:
-    description: 'The ID'
-  html_url:
-    description: 'The html url'
+    description: 'release id'
+  status:
+    description: 'status code response'
+  url:
+    description: 'url'
+  assets_url:
+    description: 'assets_url'
   upload_url:
-    description: 'The upload url'
+    description: 'upload_url'
+  html_url:
+    description: 'html_url'
+  author:
+    description: 'author'
+  tag_name:
+    description: 'tag_name'
+  target_commitish:
+    description: 'target_commitish'
+  name:
+    description: 'name'
+  draft:
+    description: 'draft'
+  prerelease:
+    description: 'prerelease'
+  assets:
+    description: 'assets'
+  body:
+    description: 'body'
+  discussion_url:
+    description: 'discussion_url'
+  published_at:
+    description: 'published_at'
+  created_at:
+    description: 'created_at'
 
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'
 
 branding:
