@@ -34,7 +34,8 @@ jobs:
         run: |
           PR_TITLE="${{ github.event.pull_request.title }}"
           PR_CONTENT="${PR_TITLE}: ${{ github.event.pull_request.body }}"
-          TAG_VERSION="v${{ env.VERSION }} - ${PR_TITLE}"
+          TAG_VERSION="v${{ env.VERSION }}"
+          TAG_VERSION_WITH_TITLE="v${{ env.VERSION }} - ${PR_TITLE}"
           echo "PR_CONTENT<<EOF" >> $GITHUB_ENV
           echo "$PR_CONTENT" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
