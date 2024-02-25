@@ -17,8 +17,13 @@ export const createTagAndRelease = async (inputs: ReleaseInputs) => {
   console.log('create tag and release with inputs', JSON.stringify(inputs));
   const octokit = connectOctokit();
 
+  const payloadDiscussionCategoryName = inputs.discussion_category_name
+    ? { discussion_category_name: inputs.discussion_category_name }
+    : {};
+
   // https://docs.github.com/pt/rest/releases/releases?apiVersion=2022-11-28#create-a-release
   const response = await octokit.request(`POST /repos/${inputs.owner}/${inputs.repo}/releases`, {
+    ...payloadDiscussionCategoryName,
     owner: inputs.owner,
     repo: inputs.repo,
     tag_name: inputs.tag_name,
@@ -27,7 +32,6 @@ export const createTagAndRelease = async (inputs: ReleaseInputs) => {
     body: inputs.body,
     draft: inputs.draft,
     prerelease: inputs.prerelease,
-    discussion_category_name: inputs.discussion_category_name,
     generate_release_notes: inputs.generate_release_notes,
     make_latest: inputs.make_latest,
   });

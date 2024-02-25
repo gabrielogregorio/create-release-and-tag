@@ -38,7 +38,7 @@ jobs:
           ref: main
 
       - name: create tag and release
-        uses: gabrielogregorio/create-tag-and-release@v1.0.1
+        uses: gabrielogregorio/create-tag-and-release@v2.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -59,18 +59,16 @@ In the `set config tag and release` step, various information is obtained, such 
 ```yml
 name: create tag and release on merge pr
 
-# when there is a push event in main or when a pull request is closed pointing to main
+# when a pull request is closed pointing to main
 on:
-  push:
-    branches: [main]
   pull_request:
     types: [closed]
     branches: [main]
 
 jobs:
   create-release:
-    # If there is a push event pointing to main OR if there is a pull request event being merged
-    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    # if there is a pull request event being merged
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -105,7 +103,7 @@ jobs:
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
 
       - name: create tag and release
-        uses: gabrielogregorio/create-tag-and-release@v1.0.1
+        uses: gabrielogregorio/create-tag-and-release@v2.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -117,9 +115,6 @@ jobs:
           generate_release_notes: false
           draft: false
           prerelease: false
-
-          # This is in case you want your release to be published as a discussion, in which case it will be published in the "Announcements" discussion
-          discussion_category_name: 'Announcements'
 
 ```
 ### Understanding Input Settings
