@@ -20,11 +20,15 @@ const getInputs = () => {
   const tag_name = core.getInput('tag_name', { required: true }).replace('refs/tags/', '');
   const release_name = core.getInput('release_name', { required: false }).replace('refs/tags/', '');
   const body = core.getInput('body', { required: false });
+  const draft = core.getInput('draft', { required: false }) || false;
+  const prerelease = core.getInput('prerelease', { required: false }) || false;
 
   return {
     tag_name,
     release_name,
     body,
+    draft,
+    prerelease,
   };
 };
 
@@ -45,12 +49,10 @@ export const createRelease = async () => {
       target_commitish: 'main',
       name: inputs.release_name,
       body: inputs.body,
-      draft: false,
-      prerelease: false,
+      draft: inputs.draft,
+      prerelease: inputs.prerelease,
       generate_release_notes: false,
-      headers: {
-        //   'X-GitHub-Api-Version': '2022-11-28',
-      },
+      headers: {},
     });
 
     console.log('tag create as success');

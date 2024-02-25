@@ -11,6 +11,12 @@ inputs:
   body:
     description: 'The body'
     required: false
+  draft:
+    description: 'The draft'
+    required: false
+  prerelease:
+    description: 'The prerelease'
+    required: false
 
 outputs:
   id:
