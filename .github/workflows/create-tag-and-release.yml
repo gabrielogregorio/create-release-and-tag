@@ -26,13 +26,9 @@ jobs:
         run: |
           PACKAGE_VERSION=$(node -p "require('./package.json').version")
 
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            PR_TITLE="${{ github.event.pull_request.title }}"
-            PR_BODY="${{ github.event.pull_request.body }}"
-            BODY_RELEASE="${PR_TITLE}: ${PR_BODY}"
-          else
-            BODY_RELEASE="Release ${PACKAGE_VERSION}"
-          fi
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_BODY="${{ github.event.pull_request.body }}"
+          BODY_RELEASE="${PR_TITLE}: ${PR_BODY}"
           echo "BODY_RELEASE=$BODY_RELEASE" >> $GITHUB_ENV
 
           TAG_NAME="v${PACKAGE_VERSION}"
